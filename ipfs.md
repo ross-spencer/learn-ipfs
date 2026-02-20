@@ -261,7 +261,8 @@ curl https://ipfs.io/ipns/k51qzi5uqu5dhl7wp9jatxst1ke5ms4l0cp26yjk4orf4t7dr5xvj4
 
 ### Signing
 
-We saw with pinning that IPFS has keys and so it can potentially be used for data signing.
+We saw with the key generation command for the IPNS that IPFS has keys and so
+we learn that IPFS has properties can potentially be used for signing data.
 
 ```bash
 # The key `my-new-key`: k51qzi5uqu5dkyu7b6rdcayq3tvmfwqh90hjea80n5p9ih4p3amxar98c1r0wp
