@@ -1,24 +1,3 @@
----
-category: technology
-name: IPFS
-filename: ipfs.bash
-contributors:
-    - ["Ross Spencer", "http://github.com/ross-spencer"]
----
-
-<!-- [ipfs/en] InterPlanetary File System -->
-
-InterPlanetary File System (IPFS) is a decentralized peer-to-peer file- and
-data- sharing network that uses content addressable storage to create
-a global namespace for content.
-
-[kubo][kubo-1] provides an official reference implementation for engaging with
-IPFS on the command line. Once installed you will have access to the `ipfs`
-command.
-
-## Initialize IPFS
-
-```bash
 # Initialize your computer as an IPFS node with:
 ./ipfs init
 
@@ -49,14 +28,6 @@ tree ~/.ipfs
 # ├── keystore
 # └── version
 
-```
-
-## Start the IPFS daemon
-
-The IPFS daemon is vital for propagating your data. Try your IPFS commands
-both with and without it running to undderstand its impact.
-
-```bash
 ./ipfs daemon
 
 # Output
@@ -65,11 +36,6 @@ both with and without it running to undderstand its impact.
 # Daemon is ready
 
 # NB. Open another terminal window, to continue
-```
-
-## Add and retrieve data from IPFS
-
-```bash
 # Add a string to IPFS:
 echo "Hello Learn X in Y minutes" | ./ipfs add
 
@@ -80,11 +46,6 @@ echo "Hello Learn X in Y minutes" | ./ipfs add
 
 # Output
 # Hello Learn X in Y minutes
-```
-
-## Read the data via cURL
-
-```bash
 # Convert your v0 identifier to base32:
 ./ipfs cid base32 QmfGEMEzFrHB3e9RwZvboUmAL9tY6KVvKEcWgiHWxvY9f1
 
@@ -109,11 +70,6 @@ echo "crerating a CID from the outset" | ./ipfs add --cid-version 1
 # Output
 # added bafkreie5gakawm2czygbrzprxl56eo5cv76tlkn6ckytncb7hdyy4mqfsu bafkreie5gakawm2czygbrzprxl56eo5cv76tlkn6ckytncb7hdyy4mqfsu
 
-```
-
-## View data already in the IPFS
-
-```bash
 
 # Because we know its address up front we can download and view XKCD 927:
 ./ipfs get QmTJc66pWBfz8oaS2dQhQqq3UJex7E9r3jTVswHifzD76p
@@ -162,17 +118,6 @@ tree QmTJc66pWBfz8oaS2dQhQqq3UJex7E9r3jTVswHifzD76p
 # Output
 # Fortunately, the charging one has been solved now that we've all standardized on mini-USB. Or is it micro-USB? Shit.
 
-```
-
-## List local data (CIDs)
-
-The information IPFS stores asks you to think differently about your files.
-Despite the FS in the name (IP)FS, it is more analogous to a content-addressed
-data lake, where data is identified by its content identifier (CID). IPFS
-allows you and others to add and retrieve data; it asks the user to
-understand how to interpret it correctly when it is retrieved.
-
-```bash
 # List the files that you are "providing" / "hosting" locally that others can
 # access via the IPFS:
 ./ipfs pin ls
@@ -193,21 +138,6 @@ understand how to interpret it correctly when it is retrieved.
 # Type: file
 # Mode: not set (not set)
 # Mtime: not set
-```
-
-## The importance of indexing
-
-As you make use of it, you might consider how you index the data you
-provide to the IPFS so that others can find it, but more importantly,
-that you retain intellectual and curatorial control over it.
-
-## IPNS
-
-InterPlanetary Name System (IPNS) provides one method for you to think
-about an index. An IPNS provides a persistent identifier for data that is
-mutable, that is, you can update content and the identifier remains the same.
-
-```bash
 # Write some new data:
 echo "[1]" | ./ipfs add --cid-version 1
 
@@ -257,13 +187,6 @@ curl https://ipfs.io/ipns/k51qzi5uqu5dhl7wp9jatxst1ke5ms4l0cp26yjk4orf4t7dr5xvj4
 # Output
 # Published to k51qzi5uqu5dkyu7b6rdcayq3tvmfwqh90hjea80n5p9ih4p3amxar98c1r0wp: /ipfs/bafkreidhgwhnr7lm2tmkvqz2zkrxnnmcg67lreod5gcokbot4v7eh56tea
 
-```
-
-### Signing
-
-We saw with pinning that IPFS has keys and so it can potentially be used for data signing.
-
-```bash
 # The key `my-new-key`: k51qzi5uqu5dkyu7b6rdcayq3tvmfwqh90hjea80n5p9ih4p3amxar98c1r0wp
 # is an ed25519 key.
 
@@ -296,13 +219,6 @@ echo $DATA_TO_SIGN | ./ipfs add && echo $DATA_TO_SIGN | ./ipfs key sign --key my
 #   "SignatureValid": true
 # }
 
-```
-
-## Pinning
-
-Persistence of data is ensured by a mechanism called pinning.
-
-```bash
 # List all locally pinned files:
 ./ipfs pin ls --type=all
 
@@ -337,17 +253,6 @@ Persistence of data is ensured by a mechanism called pinning.
 # Error: block was not found locally (offline): ipld: could not find QmfGEMEzFrHB3e9RwZvboUmAL9tY6KVvKEcWgiHWxvY9f1
 
 # Start the daemon again as you did in the first steps before moving on.
-```
-
-For long-term duplication of your CIDs you ineed to stand-up your own
-pinning API or make use of a third-party pinning service.
-
-## Content addressing
-
-Content addressing means that IPFS identifiers and paths are deterministic
-when content is identical byte-for-byte.
-
-```bash
 # Having unpinned and removed the content "Hello Learn X in Y minutes" with
 # the CID `QmfGEMEzFrHB3e9RwZvboUmAL9tY6KVvKEcWgiHWxvY9f1` try adding it to
 # IPFS again:
@@ -364,14 +269,6 @@ echo "Hello Learn X in Y minutes" | ./ipfs add
 
 # This makes it easy to understand path behaviors when it is provided to
 # the IPFS as well as promoting some level of deduplication.
-```
-
-## IPLD
-
-InterPlanetary Linked Data (IPLD) is a data first approach to looking at the
-mechanisms provided by IPFS.
-
-```bash
 # Add JSON directly to IPLD:
 echo '{"Hello": "Learn X in Y minutes" }' | ./ipfs dag put
 
@@ -447,7 +344,7 @@ echo '{ "c": "d", "e": "f", "a": "b" }' | ./ipfs dag put
 # bafyreih3bjm5aujqidwimp2ouua5bfzf6agw5bt2j5h2aveuwfrvu4cgai ==
 # bafyreih3bjm5aujqidwimp2ouua5bfzf6agw5bt2j5h2aveuwfrvu4cgai
 
-# When it is retrieved you will see the keys are sorted.
+# When it is retrieved you will see the keys are storted.
 ./ipfs dag get bafyreih3bjm5aujqidwimp2ouua5bfzf6agw5bt2j5h2aveuwfrvu4cgai
 
 # Output
@@ -457,24 +354,6 @@ echo '{ "c": "d", "e": "f", "a": "b" }' | ./ipfs dag put
 # unsettling for some and may be a consideration in its design for the end
 # user, but it does not affect its interpretation by JSON-based tools
 # or libraries.
-```
-
-These are just baby steps into IPLD. Take a look at the IPLD documentation
-for more information and how you might implement it.
-
-## DASL
-
-IPLD is complicated and so [DASL][dasl-1] has been created by the same teams
-as a subset of the standard and its primitives to help bridge the gap in
-its use and acceptance.
-
-## The IPFS ecosystem
-
-At the time of writing there are over 200 commands and infinite possibilities.
-IPFS provides an entire ecosystem of tooling with many commands you will
-need to look further into.
-
-```bash
 # All commands can be output with:
 ./ipfs commands
 
@@ -483,36 +362,3 @@ need to look further into.
 
 # Output
 # 201 (commands)
-```
-
-## Utilities
-
-* [CID checker][cid-checker-1]
-* [IPFS retrieval check][ipfs-retrieval-1]
-
-## Further reading
-
-* [IPFS docs][ipfs-docs-1]
-* [List of IPFS gateways][gateways-1 ]
-* [IPNS documentation][ipns-1]
-* [IPLD homepage and documentation][ipld-1]
-* [IPLD explorer][explorer-1]
-* [Pinning][pinning-1]
-* [Glossary][glossary-1]
-
-<!-- Inline references -->
-[dasl-1]: https://dasl.ing/
-[kubo-1]: https://github.com/ipfs/kubo
-
-<!-- Utilities -->
-[cid-checker-1]: https://cid.ipfs.tech/
-[ipfs-retrieval-1]: https://check.ipfs.network
-
-<!-- Further reading -->
-[explorer-1]: https://explore.ipld.io/
-[gateways-1]: https://ipfs.github.io/public-gateway-checker/
-[glossary-1]: https://docs.ipfs.tech/concepts/glossary/
-[ipfs-docs-1]: https://docs.ipfs.tech/
-[ipld-1]: https://ipld.io/
-[ipns-1]: https://docs.ipfs.tech/how-to/publish-ipns/#publishing-ipns-names-with-kubo
-[pinning-1]: https://docs.ipfs.tech/how-to/pin-files/#three-kinds-of-pins

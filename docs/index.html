@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WXC8R75DEN"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-WXC8R75DEN');
+    </script>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Content-Language" content="en">
+    <title>Learn IPFS in Y Minutes</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto+Slab:wght@100..900&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/screen.css">
+    <link rel="stylesheet" href="/css/light.css">
+    <link rel="stylesheet" href="/css/dark.css">
+
+    <link rel="canonical" href="https://ross-spencer.github.io/learn-ipfs">
+    <script>
+      localStorage.removeItem("lxiym_theme");
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <h1><a href="/">!!Learn X in Y minutes</a></h1>
+      <h2>Where X=IPFS</h2>
+
+      <p class="filelink">
+        Get the code:
+        <a href="/files/ipfs.bash">ipfs.bash</a>
+      </p>
+      <div id="doc">
+<!-- [ipfs/en] InterPlanetary File System -->
+<p>InterPlanetary File System (IPFS) is a decentralized peer-to-peer file- and
+data- sharing network that uses content addressable storage to create
+a global namespace for content.</p>
+<p><a href="https://github.com/ipfs/kubo">kubo</a> provides an official reference implementation for engaging with
+IPFS on the command line. Once installed you will have access to the <code>ipfs</code>
+command.</p>
+<h2>Initialize IPFS</h2>
+<div class="highlight"><pre lang="bash"><span class="c1"># Initialize your computer as an IPFS node with:</span>
+./ipfs<span class="w"> </span>init
+
+<span class="c1"># Output</span>
+<span class="c1"># generating ED25519 keypair...done</span>
+<span class="c1"># peer identity: 12D3KooWQQe2yFFNE4iqMz1HFBhd2CGN4f5XD9MgB4YNBLyjsqt8</span>
+<span class="c1"># initializing IPFS node at /home/user/.ipfs</span>
+
+<span class="c1"># Inspect the initialized IPFS root:</span>
+tree<span class="w"> </span>~/.ipfs
+
+<span class="c1"># Output</span>
+<span class="c1"># /home/user/.ipfs</span>
+<span class="c1"># ├── blocks</span>
+<span class="c1"># │   ├── diskUsage.cache</span>
+<span class="c1"># │   ├── _README</span>
+<span class="c1"># │   ├── SHARDING</span>
+<span class="c1"># │   └── X3</span>
+<span class="c1"># │       └── CIQFTFEEHEDF6KLBT32BFAGLXEZL4UWFNWM4LFTLMXQBCERZ6CMLX3Y.data</span>
+<span class="c1"># ├── config</span>
+<span class="c1"># ├── datastore</span>
+<span class="c1"># │   ├── 000001.log</span>
+<span class="c1"># │   ├── CURRENT</span>
+<span class="c1"># │   ├── LOCK</span>
+<span class="c1"># │   ├── LOG</span>
+<span class="c1"># │   └── MANIFEST-000000</span>
+<span class="c1"># ├── datastore_spec</span>
+<span class="c1"># ├── keystore</span>
+<span class="c1"># └── version</span>
+</pre></div>
+<h2>Start the IPFS daemon</h2>
+<p>The IPFS daemon is vital for propagating your data. Try your IPFS commands
+both with and without it running to undderstand its impact.</p>
+<div class="highlight"><pre lang="bash">./ipfs<span class="w"> </span>daemon
+
+<span class="c1"># Output</span>
+<span class="c1"># Initializing daemon...</span>
+<span class="c1"># ...</span>
+<span class="c1"># Daemon is ready</span>
+
+<span class="c1"># NB. Open another terminal window, to continue</span>
+</pre></div>
+<h2>Add and retrieve data from IPFS</h2>
+<div class="highlight"><pre lang="bash"><span class="c1"># Add a string to IPFS:</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Hello Learn X in Y minutes&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>./ipfs<span class="w"> </span>add
+
+<span class="c1"># Output</span>
+<span class="c1"># added QmfGEMEzFrHB3e9RwZvboUmAL9tY6KVvKEcWgiHWxvY9f1 QmfGEMEzFrHB3e9RwZvboUmAL9tY6KVvKEcWgiHWxvY9f1</span>
+
+./ipfs<span class="w"> </span>cat<span class="w"> </span>QmfGEMEzFrHB3e9RwZvboUmAL9tY6KVvKEcWgiHWxvY9f1
+
+<span class="c1"># Output</span>
+<span class="c1"># Hello Learn X in Y minutes</span>
+</pre></div>
+<h2>Read the data via cURL</h2>
+<div class="highlight"><pre lang="bash"><span class="c1"># Convert your v0 identifier to base32:</span>
+./ipfs<span class="w"> </span>cid<span class="w"> </span>base32<span class="w"> </span>QmfGEMEzFrHB3e9RwZvboUmAL9tY6KVvKEcWgiHWxvY9f1
+
+<span class="c1"># Output</span>
+<span class="c1"># bafybeih3othzkow5sr2t6q7smwzrrfgitw277ytesdkb43z527afnhwoqq</span>
+
+<span class="c1"># Request the data from an IPFS Gateway:</span>
+curl<span class="w"> </span>https://bafybeih3othzkow5sr2t6q7smwzrrfgitw277ytesdkb43z527afnhwoqq.ipfs.dweb.link
+
+<span class="c1"># Output</span>
+<span class="c1"># Hello Learn X in Y minutes</span>
+
+<span class="c1"># Do the same via another gateway:</span>
+curl<span class="w"> </span>https://ipfs.io/ipfs/bafybeih3othzkow5sr2t6q7smwzrrfgitw277ytesdkb43z527afnhwoqq
+
+<span class="c1"># Output</span>
+<span class="c1"># Hello Learn X in Y minutes</span>
+
+<span class="c1"># Create a CID from the outset:</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;crerating a CID from the outset&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>./ipfs<span class="w"> </span>add<span class="w"> </span>--cid-version<span class="w"> </span><span class="m">1</span>
+
+<span class="c1"># Output</span>
+<span class="c1"># added bafkreie5gakawm2czygbrzprxl56eo5cv76tlkn6ckytncb7hdyy4mqfsu bafkreie5gakawm2czygbrzprxl56eo5cv76tlkn6ckytncb7hdyy4mqfsu</span>
+</pre></div>
+<h2>View data already in the IPFS</h2>
+<div class="highlight"><pre lang="bash"><span class="c1"># Because we know its address up front we can download and view XKCD 927:</span>
+./ipfs<span class="w"> </span>get<span class="w"> </span>QmTJc66pWBfz8oaS2dQhQqq3UJex7E9r3jTVswHifzD76p
+
+<span class="c1"># Output</span>
+<span class="c1"># Saving file(s) to QmTJc66pWBfz8oaS2dQhQqq3UJex7E9r3jTVswHifzD76p</span>
+
+tree<span class="w"> </span>QmTJc66pWBfz8oaS2dQhQqq3UJex7E9r3jTVswHifzD76p
+
+<span class="c1"># Output</span>
+<span class="c1"># QmTJc66pWBfz8oaS2dQhQqq3UJex7E9r3jTVswHifzD76p</span>
+<span class="c1"># ├── 927 - Standards - alt.txt</span>
+<span class="c1"># ├── 927 - Standards.png</span>
+<span class="c1"># └── 927 - Standards - transcript.txt</span>
+
+<span class="c1"># These can all be viewed locally with nix tooling, or we can continue to use</span>
+<span class="c1"># IPFS:</span>
+./ipfs<span class="w"> </span>cat<span class="w"> </span>QmaHkEgzRdocAK3bvZWjhxvoHv2kAKkmMwyoQcxbUGVKxg<span class="w"> </span><span class="p">|</span><span class="w"> </span>display
+
+<span class="c1"># Output</span>
+<span class="c1"># Will display in `display` if installed with ImageMagick.</span>
+
+<span class="c1"># And its transcript:</span>
+./ipfs<span class="w"> </span>cat<span class="w"> </span>QmUvEch4som4WK7dmE5pLoM3GBA7nCeqms8oqKyaaF9Wgy
+
+<span class="c1"># Output</span>
+<span class="c1"># HOW STANDARDS PROLIFERATE</span>
+<span class="c1"># (See: A</span>
+<span class="c1"># C chargers, character encodings, instant messaging, etc.)</span>
+<span class="c1">#</span>
+<span class="c1"># SITUATION:</span>
+<span class="c1"># There are 14 competing standards.</span>
+<span class="c1">#</span>
+<span class="c1"># Geek: 14?! Ridiculous! We need to develop one universal standard that covers everyone&#39;s use cases.</span>
+<span class="c1"># Fellow Geek: Yeah!</span>
+<span class="c1">#</span>
+<span class="c1"># Soon:</span>
+<span class="c1"># SITUATION:</span>
+<span class="c1"># There are 15 competing standards.</span>
+<span class="c1">#</span>
+<span class="c1"># {{Title text: Fortunately, the charging one has been solved now that we&#39;ve all standardized on mini-USB. Or is it micro-USB? Shit.}}</span>
+
+<span class="c1"># Its alt-text:</span>
+./ipfs<span class="w"> </span>cat<span class="w"> </span>QmfNvocxez2nEChH95BQCLhJLciy5dmwbGW4NofTUvNvgu
+
+<span class="c1"># Output</span>
+<span class="c1"># Fortunately, the charging one has been solved now that we&#39;ve all standardized on mini-USB. Or is it micro-USB? Shit.</span>
+</pre></div>
+<h2>List local data (CIDs)</h2>
+<p>The information IPFS stores asks you to think differently about your files.
+Despite the FS in the name (IP)FS, it is more analogous to a content-addressed
+data lake, where data is identified by its content identifier (CID). IPFS
+allows you and others to add and retrieve data; it asks the user to
+understand how to interpret it correctly when it is retrieved.</p>
+<div class="highlight"><pre lang="bash"><span class="c1"># List the files that you are &quot;providing&quot; / &quot;hosting&quot; locally that others can</span>
+<span class="c1"># access via the IPFS:</span>
+./ipfs<span class="w"> </span>pin<span class="w"> </span>ls
+
+<span class="c1"># Output</span>
+<span class="c1"># QmUNLLsPACCz1vLxQVkXqqLX5R1X345qqfHbsf67hvA3Nn recursive</span>
+<span class="c1"># QmfGEMEzFrHB3e9RwZvboUmAL9tY6KVvKEcWgiHWxvY9f1 recursive</span>
+
+<span class="c1"># Not all of these will be the files you added, so inspect them.to understand</span>
+<span class="c1"># what they are:</span>
+./ipfs<span class="w"> </span>files<span class="w"> </span>stat<span class="w"> </span>/ipfs/QmfGEMEzFrHB3e9RwZvboUmAL9tY6KVvKEcWgiHWxvY9f1
+
+<span class="c1"># Output</span>
+<span class="c1"># QmfGEMEzFrHB3e9RwZvboUmAL9tY6KVvKEcWgiHWxvY9f1</span>
+<span class="c1"># Size: 27</span>
+<span class="c1"># CumulativeSize: 35</span>
+<span class="c1"># ChildBlocks: 0</span>
+<span class="c1"># Type: file</span>
+<span class="c1"># Mode: not set (not set)</span>
+<span class="c1"># Mtime: not set</span>
+</pre></div>
+<h2>The importance of indexing</h2>
+<p>As you make use of it, you might consider how you index the data you
+provide to the IPFS so that others can find it, but more importantly,
+that you retain intellectual and curatorial control over it.</p>
+<h2>IPNS</h2>
+<p>InterPlanetary Name System (IPNS) provides one method for you to think
+about an index. An IPNS provides a persistent identifier for data that is
+mutable, that is, you can update content and the identifier remains the same.</p>
+<div class="highlight"><pre lang="bash"><span class="c1"># Write some new data:</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[1]&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>./ipfs<span class="w"> </span>add<span class="w"> </span>--cid-version<span class="w"> </span><span class="m">1</span>
+
+<span class="c1"># Output</span>
+<span class="c1"># added bafkreifmyb5wf4r7iwesg434jtkkm26qluphd22phbaahovpfxghmdldje bafkreifmyb5wf4r7iwesg434jtkkm26qluphd22phbaahovpfxghmdldje</span>
+
+<span class="c1"># Publish the data to your default IPNS:</span>
+./ipfs<span class="w"> </span>name<span class="w"> </span>publish<span class="w"> </span>/ipfs/bafkreifmyb5wf4r7iwesg434jtkkm26qluphd22phbaahovpfxghmdldje
+
+<span class="c1"># Output</span>
+<span class="c1"># Published to k51qzi5uqu5dhl7wp9jatxst1ke5ms4l0cp26yjk4orf4t7dr5xvj4u8pj0ib0: /ipfs/bafkreifmyb5wf4r7iwesg434jtkkm26qluphd22phbaahovpfxghmdldje</span>
+
+<span class="c1"># View your file via a gateway:</span>
+curl<span class="w"> </span>https://ipfs.io/ipns/k51qzi5uqu5dhl7wp9jatxst1ke5ms4l0cp26yjk4orf4t7dr5xvj4u8pj0ib0
+
+<span class="c1"># Output</span>
+<span class="c1"># [1]</span>
+
+<span class="c1"># Change your data and publish it to your IPNS:</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[1, 2]&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>./ipfs<span class="w"> </span>add<span class="w"> </span>--cid-version<span class="w"> </span><span class="m">1</span>
+
+<span class="c1"># Output</span>
+<span class="c1"># added bafkreia7wp746ppytyy7k2js2steui7o32fc6zyhrgf7cti7yqvhqkdina bafkreia7wp746ppytyy7k2js2steui7o32fc6zyhrgf7cti7yqvhqkdina</span>
+
+<span class="c1"># Publish the new CID:</span>
+./ipfs<span class="w"> </span>name<span class="w"> </span>publish<span class="w"> </span>bafkreia7wp746ppytyy7k2js2steui7o32fc6zyhrgf7cti7yqvhqkdina
+
+<span class="c1"># Output</span>
+<span class="c1"># Published to k51qzi5uqu5dhl7wp9jatxst1ke5ms4l0cp26yjk4orf4t7dr5xvj4u8pj0ib0: /ipfs/bafkreia7wp746ppytyy7k2js2steui7o32fc6zyhrgf7cti7yqvhqkdina</span>
+
+<span class="c1"># Wait 5-10 minutes and poll the gateway again:</span>
+curl<span class="w"> </span>https://ipfs.io/ipns/k51qzi5uqu5dhl7wp9jatxst1ke5ms4l0cp26yjk4orf4t7dr5xvj4u8pj0ib0
+
+<span class="c1"># Output</span>
+<span class="c1"># [1, 2]</span>
+
+<span class="c1"># Other IPNS names can be used for more granular control of persistent</span>
+<span class="c1"># IPNS links, e.g., different content; your blog, homepage, media collection,</span>
+<span class="c1"># and so on:</span>
+./ipfs<span class="w"> </span>key<span class="w"> </span>gen<span class="w"> </span>my-new-key
+
+<span class="c1"># Output</span>
+<span class="c1"># k51qzi5uqu5dkyu7b6rdcayq3tvmfwqh90hjea80n5p9ih4p3amxar98c1r0wp</span>
+
+./ipfs<span class="w"> </span>name<span class="w"> </span>publish<span class="w"> </span>/ipfs/bafkreidhgwhnr7lm2tmkvqz2zkrxnnmcg67lreod5gcokbot4v7eh56tea<span class="w"> </span>--key<span class="w"> </span>my-new-key
+
+<span class="c1"># Output</span>
+<span class="c1"># Published to k51qzi5uqu5dkyu7b6rdcayq3tvmfwqh90hjea80n5p9ih4p3amxar98c1r0wp: /ipfs/bafkreidhgwhnr7lm2tmkvqz2zkrxnnmcg67lreod5gcokbot4v7eh56tea</span>
+</pre></div>
+<h3>Signing</h3>
+<p>We saw with pinning that IPFS has keys and so it can potentially be used for data signing.</p>
+<div class="highlight"><pre lang="bash"><span class="c1"># The key `my-new-key`: k51qzi5uqu5dkyu7b6rdcayq3tvmfwqh90hjea80n5p9ih4p3amxar98c1r0wp</span>
+<span class="c1"># is an ed25519 key.</span>
+
+<span class="c1"># Sign data and publish it as follows:</span>
+<span class="nv">DATA_TO_SIGN</span><span class="o">=</span><span class="s2">&quot;Hello security!&quot;</span>
+<span class="nb">echo</span><span class="w"> </span><span class="nv">$DATA_TO_SIGN</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>./ipfs<span class="w"> </span>add<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$DATA_TO_SIGN</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>./ipfs<span class="w"> </span>key<span class="w"> </span>sign<span class="w"> </span>--key<span class="w"> </span>my-new-key<span class="w"> </span><span class="p">|</span><span class="w"> </span>./ipfs<span class="w"> </span>add
+
+<span class="c1"># Output</span>
+<span class="c1"># added QmaQhz8NPzZqLsu4b8ZgNzue1SaEAMgz4FV282kRez1F7P QmaQhz8NPzZqLsu4b8ZgNzue1SaEAMgz4FV282kRez1F7P</span>
+<span class="c1"># added QmNLh2WNKVArkDo88rJozDMRTAQxLBtGU2xHmJVZ13yK9M QmNLh2WNKVArkDo88rJozDMRTAQxLBtGU2xHmJVZ13yK9M</span>
+
+<span class="c1"># Imagine you alreaday know of the public key from a trusted party.</span>
+
+<span class="c1"># Verify signed data retrieve from IPFS:</span>
+./ipfs<span class="w"> </span>cat<span class="w"> </span>QmaQhz8NPzZqLsu4b8ZgNzue1SaEAMgz4FV282kRez1F7P<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
+<span class="w"> </span>./ipfs<span class="w"> </span>key<span class="w"> </span>verify<span class="w"> </span><span class="se">\</span>
+<span class="w"> </span>--signature<span class="w"> </span><span class="k">$(</span>./ipfs<span class="w"> </span>cat<span class="w"> </span>QmNLh2WNKVArkDo88rJozDMRTAQxLBtGU2xHmJVZ13yK9M<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
+<span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span>.Signature<span class="k">)</span><span class="w"> </span><span class="se">\</span>
+<span class="w"> </span>--key<span class="w"> </span>k51qzi5uqu5dkyu7b6rdcayq3tvmfwqh90hjea80n5p9ih4p3amxar98c1r0wp<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq
+
+<span class="c1"># It&#39;s a little clunky but it may provide a useful demonstration for</span>
+<span class="c1"># you to build on.</span>
+
+<span class="c1"># Output</span>
+<span class="c1"># {</span>
+<span class="c1">#   &quot;Key&quot;: {</span>
+<span class="c1">#     &quot;Name&quot;: &quot;&quot;,</span>
+<span class="c1">#     &quot;Id&quot;: &quot;k51qzi5uqu5dkyu7b6rdcayq3tvmfwqh90hjea80n5p9ih4p3amxar98c1r0wp&quot;</span>
+<span class="c1">#   },</span>
+<span class="c1">#   &quot;SignatureValid&quot;: true</span>
+<span class="c1"># }</span>
+</pre></div>
+<h2>Pinning</h2>
+<p>Persistence of data is ensured by a mechanism called pinning.</p>
+<div class="highlight"><pre lang="bash"><span class="c1"># List all locally pinned files:</span>
+./ipfs<span class="w"> </span>pin<span class="w"> </span>ls<span class="w"> </span>--type<span class="o">=</span>all
+
+<span class="c1"># Output</span>
+<span class="c1"># QmfGEMEzFrHB3e9RwZvboUmAL9tY6KVvKEcWgiHWxvY9f1 recursive</span>
+<span class="c1"># bafkreie5gakawm2czygbrzprxl56eo5cv76tlkn6ckytncb7hdyy4mqfsu recursive</span>
+
+<span class="c1"># Garbage collect (gc) what&#39;s already available to gc:</span>
+./ipfs<span class="w"> </span>repo<span class="w"> </span>gc
+
+<span class="c1"># Output</span>
+<span class="c1"># removed bafkreih5fqe4ew6ir2inqa3u76ize2yg3nsxw3m5wmfk25ijmqf4payioy</span>
+<span class="c1"># removed bafkreidbycqgtvz2ph7o5cu4jktzyy2k544k6fod73gfybqfk2moy7wuei</span>
+<span class="c1"># removed bafkreigfrvnk6clikkwxjftgxyy6nfo6ocekd5sqpp34yjereup4wul4jm</span>
+<span class="c1"># removed bafkreifrrxabyunbp4l4ictsyfzhh32l6j7srpp472kr3dnj5rkl2ztiku</span>
+<span class="c1"># removed bafkreicjyrhuoztkpfcjl3dyhv6gstkcsgbgurfah3s4s3fi6adolgb2te</span>
+<span class="c1"># removed bafkreicghp2nkqdxabzeo6u4vrcn3pxmx7v6fnaj5lpuvnsgrj7tukbl4y</span>
+
+<span class="c1"># Unpin one of your own test files:</span>
+./ipfs<span class="w"> </span>pin<span class="w"> </span>rm<span class="w"> </span>QmfGEMEzFrHB3e9RwZvboUmAL9tY6KVvKEcWgiHWxvY9f1
+
+<span class="c1"># Output</span>
+<span class="c1"># unpinned QmfGEMEzFrHB3e9RwZvboUmAL9tY6KVvKEcWgiHWxvY9f1</span>
+
+<span class="c1"># Content is removed locally, and may only be retrievable globally if</span>
+<span class="c1"># cached by another peer.</span>
+
+<span class="c1"># If you shutdown the IPFS daemon, you can try retrieval:</span>
+./ipfs<span class="w"> </span>get<span class="w"> </span>QmfGEMEzFrHB3e9RwZvboUmAL9tY6KVvKEcWgiHWxvY9f1
+
+<span class="c1"># Output</span>
+<span class="c1"># Error: block was not found locally (offline): ipld: could not find QmfGEMEzFrHB3e9RwZvboUmAL9tY6KVvKEcWgiHWxvY9f1</span>
+
+<span class="c1"># Start the daemon again as you did in the first steps before moving on.</span>
+</pre></div>
+<p>For long-term duplication of your CIDs you ineed to stand-up your own
+pinning API or make use of a third-party pinning service.</p>
+<h2>Content addressing</h2>
+<p>Content addressing means that IPFS identifiers and paths are deterministic
+when content is identical byte-for-byte.</p>
+<div class="highlight"><pre lang="bash"><span class="c1"># Having unpinned and removed the content &quot;Hello Learn X in Y minutes&quot; with</span>
+<span class="c1"># the CID `QmfGEMEzFrHB3e9RwZvboUmAL9tY6KVvKEcWgiHWxvY9f1` try adding it to</span>
+<span class="c1"># IPFS again:</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Hello Learn X in Y minutes&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>./ipfs<span class="w"> </span>add
+
+<span class="c1"># Output</span>
+<span class="c1"># added QmfGEMEzFrHB3e9RwZvboUmAL9tY6KVvKEcWgiHWxvY9f1 QmfGEMEzFrHB3e9RwZvboUmAL9tY6KVvKEcWgiHWxvY9f1</span>
+
+<span class="c1"># The hashes match. The data can be retrieved again.</span>
+./ipfs<span class="w"> </span>cat<span class="w"> </span>QmfGEMEzFrHB3e9RwZvboUmAL9tY6KVvKEcWgiHWxvY9f1
+
+<span class="c1"># Output</span>
+<span class="c1"># Hello Learn X in Y minutes</span>
+
+<span class="c1"># This makes it easy to understand path behaviors when it is provided to</span>
+<span class="c1"># the IPFS as well as promoting some level of deduplication.</span>
+</pre></div>
+<h2>IPLD</h2>
+<p>InterPlanetary Linked Data (IPLD) is a data first approach to looking at the
+mechanisms provided by IPFS.</p>
+<div class="highlight"><pre lang="bash"><span class="c1"># Add JSON directly to IPLD:</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;{&quot;Hello&quot;: &quot;Learn X in Y minutes&quot; }&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>./ipfs<span class="w"> </span>dag<span class="w"> </span>put
+
+<span class="c1"># Output</span>
+<span class="c1"># bafyreiatmqgvdvcum4w4lwy2cwzixweoshjfvuy6pcoixhd5hz4imrohse</span>
+
+./ipfs<span class="w"> </span>dag<span class="w"> </span>get<span class="w"> </span>bafyreiatmqgvdvcum4w4lwy2cwzixweoshjfvuy6pcoixhd5hz4imrohse<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq
+
+<span class="c1"># Output</span>
+<span class="c1"># {</span>
+<span class="c1">#   &quot;Hello&quot;: &quot;Learn X in Y minutes&quot;</span>
+<span class="c1"># }</span>
+
+<span class="c1"># You can also output CBOR:</span>
+./ipfs<span class="w"> </span>dag<span class="w"> </span>get<span class="w"> </span>bafyreiatmqgvdvcum4w4lwy2cwzixweoshjfvuy6pcoixhd5hz4imrp<span class="w"> </span>--output-codec<span class="w"> </span>cbor<span class="w"> </span><span class="p">|</span><span class="w"> </span>xxd<span class="w"> </span>-p
+
+<span class="c1"># Output</span>
+<span class="c1"># a16548656c6c6f744c6561726e205820696e2059206d696e75746573</span>
+
+<span class="c1"># Which looks as follows in CBOR playground:</span>
+<span class="c1">#</span>
+<span class="c1"># A1                                      # map(1)</span>
+<span class="c1">#    65                                   # text(5)</span>
+<span class="c1">#       48656C6C6F                        # &quot;Hello&quot;</span>
+<span class="c1">#    74                                   # text(20)</span>
+<span class="c1">#       4C6561726E205820696E2059206D696E75746573 # &quot;Learn X in Y minutes&quot;</span>
+
+<span class="c1"># The largest benefit might be storing data as data.</span>
+<span class="c1"># But if you do have interconnected data you can model it by linking</span>
+<span class="c1"># back to previous DAG CIDs.</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;{&quot;foo&quot;: &quot;bar&quot;, &quot;prev_cid&quot;: &quot;bafyreiatmqgvdvcum4w4lwy2cwzixweoshjfvuy6pcoixhd5hz4imrohse&quot; }&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w"> </span><span class="p">|</span><span class="w"> </span>./ipfs<span class="w"> </span>dag<span class="w"> </span>put
+
+<span class="c1"># Output</span>
+<span class="c1"># bafyreihl77szrg4z6ftm23z43ymurqtpggtypln5qndhw36s4diludlyli</span>
+
+<span class="c1"># Retrieve the data:</span>
+./ipfs<span class="w"> </span>dag<span class="w"> </span>get<span class="w"> </span>bafyreihl77szrg4z6ftm23z43ymurqtpggtypln5qndhw36s4diludlyli<span class="w"> </span>--output-codec<span class="w"> </span>json
+
+<span class="c1"># Output</span>
+<span class="c1"># {</span>
+<span class="c1"># 	&quot;foo&quot;: &quot;bar&quot;,</span>
+<span class="c1"># 	&quot;prev_cid&quot;: &quot;bafyreiatmqgvdvcum4w4lwy2cwzixweoshjfvuy6pcoixhd5hz4imrohse&quot;</span>
+<span class="c1"># }</span>
+
+<span class="c1"># You must input &quot;data&quot;, e.g. JSON, not raw bytes that IPLD is able to</span>
+<span class="c1"># parse and re-present back to users as anticipated.</span>
+
+<span class="c1"># Input invalid data, i.e. plain bytes:</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Hello Learn X in Y minutes&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>./ipfs<span class="w"> </span>dag<span class="w"> </span>put
+
+<span class="c1"># Output</span>
+<span class="c1"># Error: Invalid byte while expecting start of value: 0x48</span>
+
+<span class="c1"># Input valid data:</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;{}&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>./ipfs<span class="w"> </span>dag<span class="w"> </span>put
+
+<span class="c1"># Output</span>
+<span class="c1"># bafyreigbtj4x7ip5legnfznufuopl4sg4knzc2cof6duas4b3q2fy6swua</span>
+
+<span class="c1"># Data with equivalent content is treated equally.</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;{&quot;e&quot;: &quot;f&quot;, &quot;a&quot;: &quot;b&quot;, &quot;c&quot;: &quot;d&quot; }&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>./ipfs<span class="w"> </span>dag<span class="w"> </span>put
+
+<span class="c1"># Output</span>
+<span class="c1"># bafyreih3bjm5aujqidwimp2ouua5bfzf6agw5bt2j5h2aveuwfrvu4cgai</span>
+
+<span class="c1"># Change the order of the keys and add it to IPFS.</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;{ &quot;c&quot;: &quot;d&quot;, &quot;e&quot;: &quot;f&quot;, &quot;a&quot;: &quot;b&quot; }&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>./ipfs<span class="w"> </span>dag<span class="w"> </span>put
+
+<span class="c1"># Output</span>
+<span class="c1"># bafyreih3bjm5aujqidwimp2ouua5bfzf6agw5bt2j5h2aveuwfrvu4cgai</span>
+
+<span class="c1"># bafyreih3bjm5aujqidwimp2ouua5bfzf6agw5bt2j5h2aveuwfrvu4cgai ==</span>
+<span class="c1"># bafyreih3bjm5aujqidwimp2ouua5bfzf6agw5bt2j5h2aveuwfrvu4cgai</span>
+
+<span class="c1"># When it is retrieved you will see the keys are sorted.</span>
+./ipfs<span class="w"> </span>dag<span class="w"> </span>get<span class="w"> </span>bafyreih3bjm5aujqidwimp2ouua5bfzf6agw5bt2j5h2aveuwfrvu4cgai
+
+<span class="c1"># Output</span>
+<span class="c1"># {&quot;a&quot;:&quot;b&quot;,&quot;c&quot;:&quot;d&quot;,&quot;e&quot;:&quot;f&quot;}</span>
+
+<span class="c1"># Sorting of keys affects the appearance of the data, which can be</span>
+<span class="c1"># unsettling for some and may be a consideration in its design for the end</span>
+<span class="c1"># user, but it does not affect its interpretation by JSON-based tools</span>
+<span class="c1"># or libraries.</span>
+</pre></div>
+<p>These are just baby steps into IPLD. Take a look at the IPLD documentation
+for more information and how you might implement it.</p>
+<h2>DASL</h2>
+<p>IPLD is complicated and so <a href="https://dasl.ing/">DASL</a> has been created by the same teams
+as a subset of the standard and its primitives to help bridge the gap in
+its use and acceptance.</p>
+<h2>The IPFS ecosystem</h2>
+<p>At the time of writing there are over 200 commands and infinite possibilities.
+IPFS provides an entire ecosystem of tooling with many commands you will
+need to look further into.</p>
+<div class="highlight"><pre lang="bash"><span class="c1"># All commands can be output with:</span>
+./ipfs<span class="w"> </span>commands
+
+<span class="c1"># Count them as follows:</span>
+./ipfs<span class="w"> </span>commands<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l
+
+<span class="c1"># Output</span>
+<span class="c1"># 201 (commands)</span>
+</pre></div>
+<h2>Utilities</h2>
+<ul>
+<li><a href="https://cid.ipfs.tech/">CID checker</a></li>
+<li><a href="https://check.ipfs.network">IPFS retrieval check</a></li>
+</ul>
+<h2>Further reading</h2>
+<ul>
+<li><a href="https://docs.ipfs.tech/">IPFS docs</a></li>
+<li><a href="https://ipfs.github.io/public-gateway-checker/">List of IPFS gateways</a></li>
+<li><a href="https://docs.ipfs.tech/how-to/publish-ipns/#publishing-ipns-names-with-kubo">IPNS documentation</a></li>
+<li><a href="https://ipld.io/">IPLD homepage and documentation</a></li>
+<li><a href="https://explore.ipld.io/">IPLD explorer</a></li>
+<li><a href="https://docs.ipfs.tech/how-to/pin-files/#three-kinds-of-pins">Pinning</a></li>
+<li><a href="https://docs.ipfs.tech/concepts/glossary/">Glossary</a></li>
+</ul>
+<!-- Inline references -->
+<!-- Utilities -->
+<!-- Further reading -->
+
+        <hr>
+        <p>
+          Got a suggestion? A correction, perhaps? <a href="https://github.com/ross-spencer/learn-ipfs/issues/new">Open an Issue</a> on the GitHub Repo, or make a <a href="https://github.com/ross-spencer/learn-ipfs/edit/main/ipfs.md">pull request</a> yourself!
+        </p>
+        <p class="contributed">
+          Originally contributed by Ross Spencer, and updated by <a href="https://github.com/ross-spencer/learn-ipfs/blame/main/ipfs.md"><!--2--><i>n-</i>contributors</a>.
+        </p>
+        <hr>
+        <p style="text-align: right">
+            All articles &copy; the original author and contributors, and licensed under a
+            <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.en">CC BY-SA 3.0</a>
+            license.
+        </p>
+        <p style="text-align: right">
+            Check out  <a href="https://learnxinyminutes.com/">learnxinyminutes.com</a> for
+            other learning guides and the complete community resource.<br>
+            Original concept created by <a href="http://adambard.com/">Adam Bard.</a>
+        </p>
+        <footer>
+          <a style="float: left" rel="license" href="https://creativecommons.org/licenses/by-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width: 0; width: 80px; height: 28px; padding-bottom: 5px;" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-sa.svg" /></a>
+          <p>
+            &copy; 2026
+            <a href="http://github.com/ross-spencer">Ross Spencer</a>
+          </p>
+        </footer>
+        <br>
+      </div>
+
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const langSelect = document.getElementById('lang-select');
+          langSelect?.addEventListener('change', () => {
+            const selectedOption = langSelect.options[langSelect.selectedIndex];
+            const url = selectedOption?.getAttribute('data-url');
+            if (url) {
+              window.location.href = url;
+            }
+          });
+        });
+      </script>
+    </div>
+  </body>
+</html>
